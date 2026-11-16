@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17201c">
+  <meta name="description" content="Explore Canada's federal briefing note titles, check for prior releases, and draft a focused access-to-information request.">
+  <title>The Briefing Room · CoolCode</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to search</a>
+  <header class="mast">
+    <div class="wrap mast-inner">
+      <a href="https://coolcode.ca/" class="brand"><span class="brand-dot"></span> CoolCode<span>.ca</span></a>
+      <a href="https://coolcode.ca/atip/" class="mast-link">ATIP Explorer ↗</a>
+    </div>
+  </header>
+  <main class="wrap" id="main">
+    <section class="intro" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow"><span></span> Federal open data</p>
+        <h1 id="page-title">The Briefing Room</h1>
+        <p class="intro-copy">Search the titles and reference numbers of briefings sent to Canadian ministers and deputy heads. Follow the paper trail from title to record.</p>
+      </div>
+      <aside class="snapshot" aria-label="Dataset status">
+        <div class="snapshot-label">REGISTER SNAPSHOT</div>
+        <strong class="snapshot-count" id="record-count">—</strong>
+        <div id="coverage">Loading register coverage…</div>
+        <div id="source-date" class="snapshot-meta"></div>
+        <div id="build-date" class="snapshot-meta"></div>
+        <a href="https://open.canada.ca/data/en/dataset/ee9bd7e8-90a5-45db-9287-85c8cf3589b6">Official dataset ↗</a>
+      </aside>
+    </section>
+    <section class="desk" aria-labelledby="search-title">
+      <form id="search-form" role="search">
+        <label for="query" id="search-title">Search the briefing register</label>
+        <div class="query-line">
+          <input id="query" name="q" type="search" placeholder="Try real-time rail or 2023FIN020068" maxlength="240" autocomplete="off" aria-describedby="search-help">
+          <button type="button" id="clear">Clear</button>
+        </div>
+        <p class="hint" id="search-help">Search English and French titles, references, sectors and published comments. Use quotes for a phrase or − to exclude a term.</p>
+        <div class="suggestions" aria-label="Suggested searches">
+          <span class="suggest-title">Explore</span>
+          <button type="button" data-query='"real-time rail"'>Real-Time Rail</button>
+          <button type="button" data-query='"right to repair"'>Right to repair</button>
+          <button type="button" data-query='"unidentified aerial phenomena"'>UAP</button>
+          <button type="button" data-query='"open banking"'>Open banking</button>
+          <button type="button" data-query='ransomware'>Ransomware</button>
+          <button type="button" data-query='"digital identity"'>Digital identity</button>
+        </div>
+        <div class="filters">
+          <label>Institution
+            <select id="institution"><option value="">All institutions</option></select>
+          </label>
+          <div class="range">
+            <label>Received from <input id="from" type="date"></label>
+            <label>Received through <input id="to" type="date"></label>
+          </div>
+          <label>Action
+            <select id="action">
+              <option value="">Any action</option>
+              <option value="D">Decision</option>
+              <option value="I">Information</option>
+              <option value="S">Signature</option>
+            </select>
+          </label>
+          <label>Sort by
+            <select id="sort">
+              <option value="relevance">Relevance</option>
+              <option value="newest">Newest first</option>
+              <option value="oldest">Oldest first</option>
+            </select>
+          </label>
+        </div>
+      </form>
+    </section>
+    <section class="records" aria-labelledby="results-title">
+      <div class="results-heading">
+        <div>
+          <h2 id="results-title" tabindex="-1">Briefing notes</h2>
+          <div id="status" class="hint" role="status" aria-live="polite">Loading searchable data…</div>
+        </div>
+        <a id="source-search" href="https://search.open.canada.ca/briefingt/">Search official register ↗</a>
+      </div>
+      <ol id="results" class="results"></ol>
+      <div id="empty" class="empty" hidden></div>
+      <nav id="pager" class="pager" aria-label="Search result pages" hidden>
+        <button id="previous" type="button">← Previous</button>
+        <span id="page"></span>
+        <button id="next" type="button">Next →</button>
+      </nav>
+    </section>
+  </main>
+  <dialog id="record" aria-labelledby="detail-title">
+    <article class="detail">
+      <header class="detail-header">
+        <div>
+          <div id="detail-ref" class="ref"></div>
+          <h2 id="detail-title"></h2>
+        </div>
+        <form method="dialog"><button type="submit" aria-label="Close briefing details" autofocus>Close</button></form>
+      </header>
+      <div id="detail-metadata"></div>
+      <section class="draft" aria-labelledby="draft-title">
+        <h3 id="draft-title">Draft an access request</h3>
+        <p class="hint">Ask the issuing institution for the note. Check for completed requests before filing.</p>
+        <label for="draft-text">Edit the request text</label>
+        <textarea id="draft-text" rows="6"></textarea>
+        <div class="detail-actions">
+          <button type="button" class="primary" id="copy-draft">Copy draft</button>
+          <a href="https://atip-aiprp.tbs-sct.gc.ca/" target="_blank" rel="noopener">Open Canada’s ATIP portal ↗</a>
+          <span id="copy-status" role="status"></span>
+        </div>
+      </section>
+    </article>
+  </dialog>
+  <footer class="foot">
+    <div class="wrap foot-inner">
+      <div>
+        <a href="https://coolcode.ca/" class="brand"><span class="brand-dot"></span> CoolCode<span>.ca</span></a>
+        <p>The register describes published metadata. The notes themselves may require an access request, and some titles are redacted.</p>
+        <p>Source: Treasury Board of Canada Secretariat. Contains information licensed under the <a href="https://open.canada.ca/en/open-government-licence-canada">Open Government Licence – Canada</a>.</p>
+      </div>
+      <nav aria-label="Resources">
+        <a href="https://open.canada.ca/data/en/dataset/ee9bd7e8-90a5-45db-9287-85c8cf3589b6">Government dataset ↗</a>
+        <a href="https://search.open.canada.ca/briefingt/">Official register ↗</a>
+        <a href="https://github.com/jsdyer/briefings">GitHub repository ↗</a>
+      </nav>
+    </div>
+  </footer>
+  <noscript><p class="wrap">Enable JavaScript to search the local snapshot, or use the <a href="https://search.open.canada.ca/briefingt/">official government register</a>.</p></noscript>
+</body>
+</html>
