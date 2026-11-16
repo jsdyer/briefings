@@ -105,3 +105,13 @@ textarea { margin: .4rem 0 .65rem; resize: vertical; min-height: 8rem; }
   .detail-metadata { grid-template-columns: 1fr; gap: .16rem; }
   .detail-metadata dd { margin-bottom: .45rem; }
 }
+
+.workspace { background: var(--white); border: 1px solid var(--line); padding: 1rem; margin-top: 1rem; }
+.workspace summary { cursor: pointer; font-weight: 700; }
+.workspace select { margin: .4rem .5rem .6rem 0; max-width: 100%; }
+.saved-list { padding-left: 1.25rem; }
+.saved-list li { margin: .5rem 0; overflow-wrap: anywhere; }
+.saved-list button { margin-left: .5rem; }
+#batch-area { margin-top: 1rem; }
+#batch-area label, #batch-area textarea { display: block; width: 100%; }
+.result-actions { display: flex; gap: .5rem; flex-wrap: wrap; }

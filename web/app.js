@@ -1,5 +1,7 @@
 import { ACTION, ADDRESSEE, COMMENTS_EN, COMMENTS_FR, DATE, EN, FR, ORG, REF, SECTOR_EN, SECTOR_FR, dateAnomaly, pageSize } from "./search.mjs";
 
+import { key as savedKey, readSaved, draftFor } from "./workspace.mjs";
+
 const $ = id => document.getElementById(id);
 const wholeNumber = new Intl.NumberFormat("en-CA");
 const dateFormat = new Intl.DateTimeFormat("en-CA", { dateStyle: "medium", timeZone: "UTC" });
@@ -24,6 +26,49 @@ let loadFailed = false;
 let requestID = 0;
 let requestRecord = startParams.get("ref") ? [startParams.get("org") ?? "", startParams.get("ref")] : null;
 let debounce;
+let saved = [];
+try { saved = readSaved(localStorage.getItem("briefings.saved.v1")); } catch { /* Browser storage may be unavailable. */ }
+
+function renderSaved() {
+  $("saved-count").textContent = wholeNumber.format(saved.length);
+  const list = $("saved-list");
+  list.replaceChildren();
+  for (const row of saved) {
+    const item = el("li");
+    item.append(document.createTextNode(`${row[REF] || "Reference unavailable"} · ${title(row)} · ${institution(row)}`));
+    const remove = el("button", "Remove");
+    remove.type = "button";
+    remove.setAttribute("aria-label", `Remove ${row[REF] || title(row)} from saved notes`);
+    remove.addEventListener("click", () => toggleSaved(row));
+    item.append(remove);
+    list.append(item);
+  }
+  const previous = $("draft-org").value;
+  const groups = [...new Set(saved.map(row => row[ORG]))];
+  $("draft-org").replaceChildren();
+  for (const org of groups) {
+    const option = el("option", manifest?.institutions[org] || org || "Institution unavailable");
+    option.value = org;
+    $("draft-org").append(option);
+  }
+  if (groups.includes(previous)) $("draft-org").value = previous;
+  $("make-batch").disabled = !groups.length;
+}
+
+function toggleSaved(row) {
+  const index = saved.findIndex(item => savedKey(item) === savedKey(row));
+  if (index >= 0) saved.splice(index, 1);
+  else saved.push(row.slice(0, 11));
+  try {
+    localStorage.setItem("briefings.saved.v1", JSON.stringify(saved));
+    $("saved-status").textContent = "Saved in this browser.";
+  } catch {
+    $("saved-status").textContent = "Browser storage is unavailable. This list will last only until the page is reloaded.";
+  }
+  renderSaved();
+  if (lastResult) render(lastResult);
+}
+
 
 for (const [param, id] of Object.entries(fields)) {
   if (id !== "institution" && startParams.has(param)) $(id).value = startParams.get(param);
@@ -172,7 +217,13 @@ function resultCard(row) {
   open.type = "button";
   open.setAttribute("aria-label", `View note details for ${row[REF] || title(row)}`);
   open.addEventListener("click", () => openNote(row));
-  item.append(copy, open);
+  const save = el("button", saved.some(item => savedKey(item) === savedKey(row)) ? "Remove saved" : "Save note");
+  save.type = "button";
+  save.setAttribute("aria-label", `${save.textContent} ${row[REF] || title(row)}`);
+  save.addEventListener("click", () => toggleSaved(row));
+  const actions = el("div", null, "result-actions");
+  actions.append(open, save);
+  item.append(copy, actions);
   return item;
 }
 
@@ -198,6 +249,7 @@ function render(result) {
 
 function prepareMetadata(data) {
   manifest = data;
+  renderSaved();
   $("record-count").textContent = wholeNumber.format(data.records);
   const entries = Object.entries(data.institutions).sort((left, right) => left[1].localeCompare(right[1], "en-CA"));
   $("coverage").textContent = `titles · ${wholeNumber.format(entries.filter(([slug]) => slug).length)} institutions`;
@@ -290,6 +342,14 @@ function failed() {
   empty.append(link("Use the official search ↗", officialSearch(query.value, $("institution").value)));
 }
 
+$("make-batch").addEventListener("click", () => {
+  const select = $("draft-org");
+  $("batch-text").value = draftFor(saved, select.value, select.selectedOptions[0]?.textContent || "the institution");
+  $("batch-area").hidden = false;
+  $("batch-status").textContent = "Draft created. Review it before submitting.";
+});
+$("copy-batch").addEventListener("click", () => copy($("batch-text").value, $("batch-status"), "Draft copied.", $("batch-text")));
+renderSaved();
 $("clear").addEventListener("click", reset);
 $("clear").setAttribute("aria-label", "Clear search and filters");
 query.addEventListener("input", () => scheduleSearch());

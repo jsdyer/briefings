@@ -76,6 +76,21 @@
         </div>
       </form>
     </section>
+    <details class="workspace" id="workspace">
+      <summary>Saved notes <span id="saved-count">0</span></summary>
+      <p class="hint">Collect notes across searches. Your saved list stays in this browser. Drafts are grouped by institution.</p>
+      <p id="saved-status" role="status" class="hint"></p>
+      <ul id="saved-list" class="saved-list"></ul>
+      <label for="draft-org">Draft for institution</label>
+      <select id="draft-org"></select>
+      <button type="button" id="make-batch">Create request draft</button>
+      <div id="batch-area" hidden>
+        <label for="batch-text">Edit the request text</label>
+        <textarea id="batch-text" rows="10"></textarea>
+        <button type="button" id="copy-batch">Copy draft</button>
+        <span id="batch-status" role="status"></span>
+      </div>
+    </details>
     <section class="records" aria-labelledby="results-title">
       <div class="results-heading">
         <div>

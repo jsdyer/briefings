@@ -34,3 +34,7 @@ The builder checks the CSV columns, preserves both official languages, and makes
 Pages assets resolve relative to `/briefings/`. The existing account site's CoolCode.ca domain covers the project site. A project-specific custom domain is unnecessary.
 
 Run targeted search checks with `node --test tests/search.test.mjs`.
+
+### Research workspace
+
+Save notes across searches to collect a local list. Select an institution to draft a request containing only its saved notes. The draft is editable before copying. The saved list is kept in browser storage, where available; generated drafts are kept in the open page.
