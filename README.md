@@ -1,5 +1,9 @@
 # The Briefing Room
 
+<!-- coolcode:guide -->
+Save briefing references across searches, then select an institution to draft a request containing its saved notes. Follow the ATIP Explorer link to look for an earlier release; the briefing register provides titles and metadata rather than the documents themselves.
+<!-- /coolcode:guide -->
+
 Search the Government of Canada's published briefing note titles and numbers. Filter by institution, date received, or action, and use a selected note to prepare a focused access-to-information request.
 
 [Open the app](https://coolcode.ca/briefings/) · [ATIP Explorer](https://coolcode.ca/atip/) · [Official briefing register](https://search.open.canada.ca/briefingt/)

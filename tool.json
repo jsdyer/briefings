@@ -1,0 +1,22 @@
+{
+  "id": "briefings",
+  "title": "The Briefing Room",
+  "description": "Search briefing note titles and reference numbers.",
+  "category": "explorers",
+  "tags": [
+    "atip",
+    "foi",
+    "government",
+    "departmental"
+  ],
+  "icon": "file-text",
+  "url": "/briefings/",
+  "source": "https://github.com/jsdyer/briefings",
+  "hosting": "project",
+  "access": "browser",
+  "data_info": {
+    "mode": "snapshot",
+    "detail": "Federal departments publish briefing note titles, reference numbers and the institutions that prepared them.",
+    "cadence": "Daily"
+  }
+}
