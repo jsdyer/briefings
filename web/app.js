@@ -75,6 +75,7 @@ for (const [param, id] of Object.entries(fields)) {
 }
 if (!$("sort").value) $("sort").value = "relevance";
 query.value = query.value.slice(0, 240);
+$("search-options").open = ["institution", "from", "to", "action", "sort"].some(param => startParams.has(param));
 
 function el(tag, content, className) {
   const node = document.createElement(tag);
@@ -232,7 +233,12 @@ function render(result) {
   currentPage = result.page;
   empty.hidden = true;
   const count = wholeNumber.format(result.total);
-  status.textContent = `${count} ${result.total === 1 ? "note" : "notes"} found`;
+  const filters = selectedFilters();
+  const filtered = filters.query || filters.institution || filters.from || filters.to || filters.action;
+  const order = filters.sort === "oldest" ? "oldest first"
+    : filters.sort === "relevance" && filters.query ? "by relevance" : "newest first";
+  const noun = result.total === 1 ? "title" : "titles";
+  status.textContent = `${count} ${filtered ? "matching " : "published "}${noun}${result.total ? " · " + order : ""}`;
   if (!result.total) {
     displayEmpty("No matching notes", "Try fewer words, a reference number, or a wider date range. A note may still exist outside the published register.");
     const clear = el("button", "Clear all filters");
@@ -254,7 +260,7 @@ function prepareMetadata(data) {
   const entries = Object.entries(data.institutions).sort((left, right) => left[1].localeCompare(right[1], "en-CA"));
   $("coverage").textContent = `titles · ${wholeNumber.format(entries.filter(([slug]) => slug).length)} institutions`;
   $("source-date").textContent = data.sourceUpdated ? `Source updated ${formatDate(data.sourceUpdated)}` : "Source update date unavailable";
-  $("build-date").textContent = `Snapshot built ${formatDate(data.snapshotBuilt)}`;
+  $("build-date").textContent = `Snapshot built ${formatDate(data.snapshotBuilt)} · checked daily`;
   for (const [slug, name] of entries) {
     if (!slug) continue;
     const option = el("option", name);

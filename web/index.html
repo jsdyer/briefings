@@ -22,29 +22,21 @@
   <main class="wrap" id="main">
     <section class="intro" aria-labelledby="page-title">
       <div>
-        <p class="eyebrow"><span></span> Federal open data</p>
-        <h1 id="page-title">The Briefing Room</h1>
-        <p class="intro-copy">Search the titles and reference numbers of briefings sent to Canadian ministers and deputy heads. Follow the paper trail from title to record.</p>
+        <p class="eyebrow"><span></span> The Briefing Room</p>
+        <h1 id="page-title">Search federal briefing notes</h1>
+        <p class="intro-copy">Find out what Canadian ministers and deputy heads were briefed on. Pick a topic or enter a reference number, then open a result to check for a release or draft a request.</p>
       </div>
-      <aside class="snapshot" aria-label="Dataset status">
-        <div class="snapshot-label">REGISTER SNAPSHOT</div>
-        <strong class="snapshot-count" id="record-count">—</strong>
-        <div id="coverage">Loading register coverage…</div>
-        <div id="source-date" class="snapshot-meta"></div>
-        <div id="build-date" class="snapshot-meta"></div>
-        <a href="https://open.canada.ca/data/en/dataset/ee9bd7e8-90a5-45db-9287-85c8cf3589b6">Official dataset ↗</a>
-      </aside>
     </section>
     <section class="desk" aria-labelledby="search-title">
       <form id="search-form" role="search">
-        <label for="query" id="search-title">Search the briefing register</label>
+        <label for="query" id="search-title">Topic or reference number</label>
         <div class="query-line">
           <input id="query" name="q" type="search" placeholder="Try real-time rail or 2023FIN020068" maxlength="240" autocomplete="off" aria-describedby="search-help">
           <button type="button" id="clear">Clear</button>
         </div>
-        <p class="hint" id="search-help">Search English and French titles, references, sectors and published comments. Use quotes for a phrase or − to exclude a term.</p>
+        <p class="hint" id="search-help">Search in English or French. Use quotes for an exact phrase.</p>
         <div class="suggestions" aria-label="Suggested searches">
-          <span class="suggest-title">Explore</span>
+          <span class="suggest-title">Try a topic</span>
           <button type="button" data-query='"real-time rail"'>Real-Time Rail</button>
           <button type="button" data-query='"right to repair"'>Right to repair</button>
           <button type="button" data-query='"unidentified aerial phenomena"'>UAP</button>
@@ -52,32 +44,43 @@
           <button type="button" data-query='ransomware'>Ransomware</button>
           <button type="button" data-query='"digital identity"'>Digital identity</button>
         </div>
-        <div class="filters">
-          <label>Institution
-            <select id="institution"><option value="">All institutions</option></select>
-          </label>
-          <div class="range">
-            <label>Received from <input id="from" type="date"></label>
-            <label>Received through <input id="to" type="date"></label>
+        <details class="search-options" id="search-options">
+          <summary>Filters and sort order</summary>
+          <div class="filters">
+            <label>Institution
+              <select id="institution"><option value="">All institutions</option></select>
+            </label>
+            <div class="range">
+              <label>Received from <input id="from" type="date"></label>
+              <label>Received through <input id="to" type="date"></label>
+            </div>
+            <label>Action
+              <select id="action">
+                <option value="">Any action</option>
+                <option value="D">Decision</option>
+                <option value="I">Information</option>
+                <option value="S">Signature</option>
+              </select>
+            </label>
+            <label>Sort by
+              <select id="sort">
+                <option value="relevance">Relevance</option>
+                <option value="newest">Newest first</option>
+                <option value="oldest">Oldest first</option>
+              </select>
+            </label>
           </div>
-          <label>Action
-            <select id="action">
-              <option value="">Any action</option>
-              <option value="D">Decision</option>
-              <option value="I">Information</option>
-              <option value="S">Signature</option>
-            </select>
-          </label>
-          <label>Sort by
-            <select id="sort">
-              <option value="relevance">Relevance</option>
-              <option value="newest">Newest first</option>
-              <option value="oldest">Oldest first</option>
-            </select>
-          </label>
-        </div>
+        </details>
       </form>
     </section>
+    <details class="workspace snapshot">
+      <summary>Register coverage and updates</summary>
+      <strong class="snapshot-count" id="record-count">—</strong>
+      <div id="coverage">Loading register coverage…</div>
+      <div id="source-date" class="snapshot-meta"></div>
+      <div id="build-date" class="snapshot-meta"></div>
+      <a href="https://open.canada.ca/data/en/dataset/ee9bd7e8-90a5-45db-9287-85c8cf3589b6">Official dataset ↗</a>
+    </details>
     <details class="workspace" id="workspace">
       <summary>Saved notes <span id="saved-count">0</span></summary>
       <p class="hint">Collect notes across searches. Your saved list stays in this browser. Drafts are grouped by institution.</p>
@@ -96,7 +99,7 @@
     <section class="records" aria-labelledby="results-title">
       <div class="results-heading">
         <div>
-          <h2 id="results-title" tabindex="-1">Briefing notes</h2>
+          <h2 id="results-title" tabindex="-1">Briefing note titles</h2>
           <div id="status" class="hint" role="status" aria-live="polite">Loading searchable data…</div>
         </div>
         <a id="source-search" href="https://search.open.canada.ca/briefingt/">Search official register ↗</a>
